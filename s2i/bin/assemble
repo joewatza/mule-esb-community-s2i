@@ -1,0 +1,47 @@
+#!/bin/sh
+# Global S2I variable setup
+
+if [ "${SCRIPT_DEBUG}" = "true" ] ; then
+    set -x
+    echo "Script debugging is enabled, allowing bash commands and their arguments to be printed as they are executed"
+fi
+
+SCRIPT_DIR="$(dirname $0)"
+source "${SCRIPT_DIR}/s2i-setup"
+source "${SCRIPT_DIR}/common.sh"
+
+
+# =========================================================================
+# Helper functions:
+
+function check_error() {
+  local label=$1
+  local error=$2
+  if [ ${error} -ne 0 ]; then
+    echo "Aborting due to error code $error for $label"
+    exit ${error}
+  fi
+}
+
+
+# =========================================================================
+# Main
+
+echo "=================================================================="
+echo "Starting S2I Java Build ....."
+echo "S2I source build with plain binaries detected"
+if [ -d "${S2I_SOURCE_DIR}/deployments" ]; then
+  default_binary_dir="${S2I_SOURCE_DIR}/deployments"
+else
+  default_binary_dir="${S2I_SOURCE_DIR}"
+fi
+binary_dir="${ARTIFACT_DIR:-${default_binary_dir}}"
+# Assuming that the source already contains compiled artefacts
+echo "Copying binaries from ${binary_dir} to ${DEPLOYMENTS_DIR} ..."
+cp ${binary_dir}/*.zip ${DEPLOYMENTS_DIR}/
+check_error "copying ${binary_dir} to ${DEPLOYMENTS_DIR}" $?
+
+# Remove java tmp perf data dir owned by 185
+rm -rf /tmp/hsperfdata_jboss
+
+echo "... done"
