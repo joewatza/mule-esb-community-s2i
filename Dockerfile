@@ -10,14 +10,15 @@ LABEL io.k8s.description="Platform for building Mule 3.9.0 CE applications" \
     io.openshift.expose-services="8080:http" \
     io.openshift.tags="builder,mule-3.9.0"
 
-RUN wget -P /opt https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/3.9.0/mule-standalone-3.9.0.tar.gz
-RUN cd /opt && tar xvzf /opt/mule-standalone-3.9.0.tar.gz
-RUN rm /opt/mule-standalone-3.9.0.tar.gz
-RUN ln -s /opt/mule-standalone-3.9.0 /opt/mule
+RUN wget -P /opt https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/3.9.0/mule-standalone-3.9.0.tar.gz \
+    && cd /opt && tar xvzf /opt/mule-standalone-3.9.0.tar.gz \
+    && rm /opt/mule-standalone-3.9.0.tar.gz \
+    && ln -s /opt/mule-standalone-3.9.0 /opt/mule
+
 
 LABEL io.openshift.s2i.scripts-url=image:///usr/local/s2i
 COPY ./s2i/bin/ /usr/local/s2i
-
+RUN chmod -R 777 /usr/local/s2i
 RUN chown -R 1001:1001 /opt && chmod -R 777 /opt
 
 # default user
