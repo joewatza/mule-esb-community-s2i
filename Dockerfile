@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/rhel7-atomic
 MAINTAINER Tero Ahonen <tahonen@redhat.com>
 ENV BUILDER_VERSION 1.0
 RUN microdnf --enablerepo=rhel-7-server-rpms \
-  install tar unzip bc java-1.8.0-openjdk-headless --nodocs ;\
+  install wget tar unzip bc java-1.8.0-openjdk-headless --nodocs ;\
   microdnf clean all
 
 LABEL io.k8s.description="Platform for building Mule 3.9.0 CE applications" \
