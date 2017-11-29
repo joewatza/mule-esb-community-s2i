@@ -10,7 +10,7 @@ LABEL io.k8s.description="Platform for building Mule 3.9.0 CE applications" \
     io.openshift.expose-services="8080:http" \
     io.openshift.tags="builder,mule-3.9.0"
 
-RUN wget https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/3.9.0/mule-standalone-3.9.0.tar.gz
+RUN wget -P /opt https://repository.mulesoft.org/nexus/content/repositories/releases/org/mule/distributions/mule-standalone/3.9.0/mule-standalone-3.9.0.tar.gz
 RUN cd /opt && tar xvzf ~/mule-standalone-3.9.0.tar.gz
 RUN rm ~/mule-standalone-3.9.0.tar.gz
 RUN ln -s /opt/mule-standalone-3.9.0 /opt/mule
