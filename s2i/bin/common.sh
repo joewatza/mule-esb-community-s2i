@@ -1,4 +1,5 @@
 # common shell routines for s2i scripts
+# watza was here - testing git controls
 
 
 function find_env() {
